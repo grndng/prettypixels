@@ -1,25 +1,26 @@
 import argparse
-from inspect import Attribute
 from PIL import Image
 
 #TODO: Proper docstrings
-#TODO: How to generate new image? -> Image.new()
-#TODO: How to put image onto another image? -> Image.paste()
-#TODO: How to create a good looking shadow?
+#TODO: How to create a good looking shadow? nope...
+#TODO: How to create a shadow anyway? -> ImageFilter
+
+input = "a.png"
+color = "#c3c3c3"
+
+try:
+    im = Image.open(input)
+except FileNotFoundError as e:
+    print(f'Please check your path. "{input}" does not seem to be valid.')
 
 
-def load_image(imgpath):
-    try:
-        return Image.open(imgpath)
-    except FileNotFoundError as e:
-        print(f'Please check your path. "{imgpath}" does not seem to be valid.')
-
-def generate_new_image(img, hexcode):
-    w, h = img.size[0], img.size[1]
+def generate_background(input, hexcode):
+    im = Image.open(input)
+    w, h = im.size[0], im.size[1]
     bg = ((int(w*1.5), int(h*1.5)))
     background = Image.new(mode = "RGB", size=bg, color=hexcode)
+    background.paste(im, box=(int(w*0.25), int(h*0.25)))
+    background.save("output.jpg")
     return background
 
-
-# Works but fucking clunky to call
-generate_new_image(load_image("a.png"), "#000000").save("b.png")
+generate_background(input, "#cecece")
