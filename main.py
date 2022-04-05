@@ -2,8 +2,7 @@ import argparse
 from PIL import Image, ImageFilter
 
 #TODO: Proper docstrings
-#TODO: How to create a good looking shadow? nope...
-#TODO: How to create a shadow anyway? -> ImageFilter and blur
+#TODO: For shadows I could copy the image size, create a black image, blur it iteratively and paste it inbetween bg and fg
 
 input = "a.png"
 color = "#c3c3c3"
