@@ -1,8 +1,11 @@
+from typing import Tuple
 from PIL import Image, ImageFilter
+from statistics import mean
 
 #TODO: Proper docstrings
 #TODO: package and argparse it!
 #TODO: Offer sample colors (pastel palette?)
+#TODO: Compute background color by taking mean rgb val of image
 #TODO: GUI it?
 
 input = "./sample_images/a.png"
@@ -10,7 +13,12 @@ input = "./sample_images/a.png"
 out = f"./sample_images/bg_{filename}"
 color = "#c3c3c3"
 
-def prettify(input, output, bgcolor="#c3c3c3", bordersize=100, bluramount=10):
+def compute_average_rgb_val(input) -> Tuple:
+    avg_color = [mean(input.getdata(band)) for band in range(len(input.mode))]
+    return avg_color
+
+
+def prettify(input, output, bgcolor="#c3c3c3", bordersize=100, bluramount=10) -> None:
     im = Image.open(input)
 
     w, h = im.size
@@ -20,5 +28,6 @@ def prettify(input, output, bgcolor="#c3c3c3", bordersize=100, bluramount=10):
     blur = background.filter(ImageFilter.GaussianBlur(radius=bluramount))
     blur.paste(im, box=(bordersize, bordersize))
     blur.save(output)
+    return None
         
-prettify(input, out, "#c3c3c3", 100, 2)
+prettify(input, out, "#97C1A9", 100, 2)
