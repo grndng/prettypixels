@@ -21,9 +21,16 @@ def create_background(input, bgcolor="#c3c3c3"):
         # enlightenment: the background is a solid color so I can
         # simply go and blur the entire thing with a black box in the
         # middle, no?
-        
+
+        # yeah but how to find the right size? Easier would be to let the user
+        # decide how large the image (in relation to the original image) should be
+        # at the end of the process!
+        #TODO: Clean up the mess, get going...
+
+        bgw, bgh = background.size
         # Okay, this does something but not as expected...
-        background.paste(0, box=(int(w*0.25), int(h*0.25), w-int(h*0.25), h-int(h*0.25)))
+        background.paste(0, box=(int(w*0.2),int(h*0.2),int(w*1.3),int(h*1.3)))
+        #background.paste(0, box=(int(bgw*0.1),int(bgh*0.1),int(bgw*0.9),int(bgh*0.9)))
 
         background.save("bg_blackbox.png")
 
