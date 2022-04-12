@@ -8,42 +8,22 @@ input = "./sample_images/a.png"
 color = "#c3c3c3"
 
 def create_background(input, bgcolor="#c3c3c3", bordersize=100):
-    try:
-        foreground = Image.open(input)
-    except FileNotFoundError as e:
-        print(f'Please check your path. "{input}" does not seem to be valid.')
-    else:
-        w, h = foreground.size
-        bg = (w+bordersize, h+bordersize)
-        background = Image.new(mode = "RGB", size=bg, color=bgcolor)
-        background.save("background.png")        
+    foreground = Image.open(input)
 
-        bgw, bgh = background.size
-
-        print(f"{w}, {bgw}\n{h}, {bgh}")
-        # Need to specify the entire region size with a 4-item box
-        #background.paste(0, box=(bordersize, bordersize, bordersize+w, bordersize+h))
-        background.paste(0, box=(bordersize, bordersize, w, h))
-        background.save("bg_blackbox.png")
-        
-create_background(input, color, 100)
-#create_background(input, "#c3c3c3")
-
-"""
-def blackimg(input):
-    im = Image.open(input)
-    w, h = im.size
-    black = Image.new(mode="RGBA", size=(w,h), color=0)
-    black.save("black.png")
-    return black
-"""
-
-def create_blur(input, amount):
-    im = Image.open(input)
-    w,h = im.size
-    blackimg = Image.new(mode=im.mode, size=(w,h), color=0)
-    blur = blackimg.filter(ImageFilter.GaussianBlur(radius=amount))
+    w, h = foreground.size
+    background = Image.new(mode = "RGB", size=(w+bordersize*2, h+bordersize*2), color=bgcolor)
+            
+    # Need to specify the entire region size with a 4-item box
+    # first two elements determine upper left corner, last two
+    # lower right corner of pasted box
+    background.paste(0, box=(bordersize, bordersize, w+bordersize, h+bordersize))
+    
+    # "repotting" create_blur into this to have everything
+    # at the same place and work with a single function
+    
+    blur = background.filter(ImageFilter.GaussianBlur(radius=5))
     blur.save("blur.png")
-    return blur
-
-#create_blur(input, 5)
+    blur.paste(foreground, box=(bordersize, bordersize))
+    blur.save("blur_foreground.png")
+        
+create_background(input)
