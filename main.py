@@ -7,34 +7,26 @@ from PIL import Image, ImageFilter
 input = "./sample_images/a.png"
 color = "#c3c3c3"
 
-def create_background(input, bgcolor="#c3c3c3"):
+def create_background(input, bgcolor="#c3c3c3", bordersize=100):
     try:
         foreground = Image.open(input)
     except FileNotFoundError as e:
         print(f'Please check your path. "{input}" does not seem to be valid.')
     else:
         w, h = foreground.size
-        bg = ((int(w*1.5), int(h*1.5)))
+        bg = (w+bordersize, h+bordersize)
         background = Image.new(mode = "RGB", size=bg, color=bgcolor)
-        #background.save("background.png")
-        
-        # enlightenment: the background is a solid color so I can
-        # simply go and blur the entire thing with a black box in the
-        # middle, no?
-
-        # yeah but how to find the right size? Easier would be to let the user
-        # decide how large the image (in relation to the original image) should be
-        # at the end of the process!
-        #TODO: Clean up the mess, get going...
+        background.save("background.png")        
 
         bgw, bgh = background.size
-        # Okay, this does something but not as expected...
-        background.paste(0, box=(int(w*0.2),int(h*0.2),int(w*1.3),int(h*1.3)))
-        #background.paste(0, box=(int(bgw*0.1),int(bgh*0.1),int(bgw*0.9),int(bgh*0.9)))
 
+        print(f"{w}, {bgw}\n{h}, {bgh}")
+        # Need to specify the entire region size with a 4-item box
+        #background.paste(0, box=(bordersize, bordersize, bordersize+w, bordersize+h))
+        background.paste(0, box=(bordersize, bordersize, w, h))
         background.save("bg_blackbox.png")
-
-create_background(input)
+        
+create_background(input, color, 100)
 #create_background(input, "#c3c3c3")
 
 """
