@@ -4,7 +4,7 @@ from PIL import Image, ImageFilter
 #TODO: Proper docstrings
 #TODO: For shadows I could copy the image size, create a black image, blur it iteratively and paste it inbetween bg and fg
 
-input = "macro.jpg"
+input = "./sample_images/a.png"
 color = "#c3c3c3"
 
 def create_background(input, bgcolor="#c3c3c3"):
@@ -16,13 +16,15 @@ def create_background(input, bgcolor="#c3c3c3"):
         w, h = foreground.size
         bg = ((int(w*1.5), int(h*1.5)))
         background = Image.new(mode = "RGB", size=bg, color=bgcolor)
-        #background.paste(foreground, box=(int(w*0.25), int(h*0.25)))
-        background.save("background.png")
+        #background.save("background.png")
         
-    # enlightenment: the background is a solid color so I can
-    # simply go and blur the entire thing with a black box in the
-    # middle, no?
-        background.paste(0, [100, 100, 100, 100]) # ok this doesnt work
+        # enlightenment: the background is a solid color so I can
+        # simply go and blur the entire thing with a black box in the
+        # middle, no?
+        
+        # Okay, this does something but not as expected...
+        background.paste(0, box=(int(w*0.25), int(h*0.25), w-int(h*0.25), h-int(h*0.25)))
+
         background.save("bg_blackbox.png")
 
 create_background(input)
