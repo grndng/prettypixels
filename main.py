@@ -4,23 +4,39 @@ from PIL import Image, ImageFilter
 #TODO: Proper docstrings
 #TODO: For shadows I could copy the image size, create a black image, blur it iteratively and paste it inbetween bg and fg
 
-input = "a.png"
+input = "macro.jpg"
 color = "#c3c3c3"
 
-def shadows(input):
-    pass
-
-def prettify(input, hexcode):
+def create_background(input, hexcode):
     try:
-        im = Image.open(input)
+        foreground = Image.open(input)
     except FileNotFoundError as e:
         print(f'Please check your path. "{input}" does not seem to be valid.')
     else:
-        w, h = im.size
+        w, h = foreground.size
         bg = ((int(w*1.5), int(h*1.5)))
         background = Image.new(mode = "RGB", size=bg, color=hexcode)
-        background.paste(im, box=(int(w*0.25), int(h*0.25)))
-        background.save("output.jpg")
+        #background.paste(foreground, box=(int(w*0.25), int(h*0.25)))
+        background.save("background.png")
         return background
 
-prettify(input, "#cecece")
+#create_background(input, "#c3c3c3")
+
+"""
+def blackimg(input):
+    im = Image.open(input)
+    w, h = im.size
+    black = Image.new(mode="RGBA", size=(w,h), color=0)
+    black.save("black.png")
+    return black
+"""
+
+def create_blur(input, amount):
+    im = Image.open(input)
+    w,h = im.size
+    blackimg = Image.new(mode=im.mode, size=(w,h), color=0)
+    blur = blackimg.filter(ImageFilter.GaussianBlur(radius=amount))
+    blur.save("blur.png")
+    return blur
+
+#create_blur(input, 5)
