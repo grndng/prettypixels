@@ -7,7 +7,7 @@ from PIL import Image, ImageFilter
 input = "macro.jpg"
 color = "#c3c3c3"
 
-def create_background(input, hexcode):
+def create_background(input, bgcolor="#c3c3c3"):
     try:
         foreground = Image.open(input)
     except FileNotFoundError as e:
@@ -15,11 +15,17 @@ def create_background(input, hexcode):
     else:
         w, h = foreground.size
         bg = ((int(w*1.5), int(h*1.5)))
-        background = Image.new(mode = "RGB", size=bg, color=hexcode)
+        background = Image.new(mode = "RGB", size=bg, color=bgcolor)
         #background.paste(foreground, box=(int(w*0.25), int(h*0.25)))
         background.save("background.png")
-        return background
+        
+    # enlightenment: the background is a solid color so I can
+    # simply go and blur the entire thing with a black box in the
+    # middle, no?
+        background.paste(0, [100, 100, 100, 100]) # ok this doesnt work
+        background.save("bg_blackbox.png")
 
+create_background(input)
 #create_background(input, "#c3c3c3")
 
 """
