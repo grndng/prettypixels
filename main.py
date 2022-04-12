@@ -49,3 +49,4 @@ def prettify(input, output, bgcolor="#c3c3c3", bordersize=100, bluramount=10) ->
 
 #prettify(input, out, f"{avg_rgb(input)}", 200, 10)
 prettify(input, out, "#fcf4dd", 400, 20)
+
