@@ -29,13 +29,14 @@ def avg_rgb(input) -> str:
     return avg_color_hex
 
 
-def prettify(input, output, bgcolor="#c3c3c3", border=None, blur=None) -> None:
+def prettify(input, output, bgcolor="#ffffff", nobg=False, border=None, blur=None) -> None:
     """Creates and saves a new image with a specified background color and drop shadow
 
     Args:
         input (str): Path to image file
         output (str): Path to image file (please specify file type)
-        bgcolor (str, optional): Background color as hexcode. Defaults to "#c3c3c3".
+        bgcolor (str, optional): Background color as hexcode. Defaults to "#ffffff" (white).
+        nobg (bool, optional): "True" will set the background to transparent, regardless of the bgcolor.
         border (int, optional): Border size in pixels. Defaults to roughly 10 % of the height.
         blur (int, optional): Amount of blur to apply. Defaults to computing a "pleasing" value considering image size (not yet implemented).
     """
@@ -45,13 +46,23 @@ def prettify(input, output, bgcolor="#c3c3c3", border=None, blur=None) -> None:
     if border is None:
         border = int(h*0.1)
 
-    #TODO: Set bordersize depending on image size
-    background = Image.new(mode = "RGBA", size=(w+border*2, h+border*2), color=bgcolor)
-    background.paste(0, box=(border, border, w+border, h+border))
-    #TODO: Set blur amount depending on image size
-    blur_layer = background.filter(ImageFilter.GaussianBlur(radius=blur))
-    blur_layer.paste(im, box=(border, border))
-    blur_layer.save(output, quality=100)
+    if nobg is True:
+        # If the blur amount is too high, then the border size might not be enough to make the edges of the blurry
+        # black background look "smooth" so it is limited to 20 until I come up with a better solution.
+        if blur > 20:
+            blur = 20
+        background = Image.new(mode = "RGBA", size=(w+border*2, h+border*2), color=(0,0,0,0))
+        background.paste((0,0,0), box=(border, border, w+border, h+border))
+        blur_layer = background.filter(ImageFilter.GaussianBlur(radius=blur))
+        blur_layer.paste(im, box=(border, border))
+        blur_layer.save(output, quality=100)
+    else:
+        background = Image.new(mode = "RGBA", size=(w+border*2, h+border*2), color=bgcolor)
+        background.paste(0, box=(border, border, w+border, h+border))
+        #TODO: Set blur amount depending on image size
+        blur_layer = background.filter(ImageFilter.GaussianBlur(radius=blur))
+        blur_layer.paste(im, box=(border, border))
+        blur_layer.save(output, quality=100)
 
 #prettify(input, out, "#fcf4dd", 100, 20)
-prettify(input, out, (255,255,255,0), blur = 20)
+prettify(input, out, (255,255,255,0), nobg=True, blur = 200)
