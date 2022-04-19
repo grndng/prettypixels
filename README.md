@@ -54,6 +54,7 @@ If you want a transparent background, just leave the bordersize blank:
 
 The used image is from Gabrielle Henderson on [Unsplash.com](https://unsplash.com/photos/Y3OrAn230bs).
 
+---
 ## ToDo:
 * OOP it
 * Use the avg_rgb function to create a background from the average color of the given image
