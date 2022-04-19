@@ -56,9 +56,10 @@ The used image is from Gabrielle Henderson on [Unsplash.com](https://unsplash.co
 
 ---
 ## ToDo:
-* OOP it
+* Package it for macOS/Linux
 * Use the avg_rgb function to create a background from the average color of the given image
 * Offer sample pastel colors I use myself
+* OOP it
 * Offer to process entire folders with the same parameters
 * Write a GUI
 
