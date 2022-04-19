@@ -2,7 +2,6 @@ from typing import Tuple
 from PIL import Image, ImageFilter
 from statistics import mean
 
-#TODO: What happens if I don't enter any bordersize or blur amount? :(
 #TODO: package and argparse it!
 #TODO: Offer sample colors (pastel palette?)
 #TODO: GUI it?
